@@ -104,7 +104,7 @@ Note: When I wrote this class, I intended to use it in a multiline fashion (You'
 ## Known limitations
 Check issues
 
-## TOODs
+## TODOs
 * Document detailed error reporting
 
 ## Credits
