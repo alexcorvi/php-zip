@@ -237,7 +237,10 @@ class Zip {
 			// add each file
 			foreach ($this->org_files as $org_file_path) {
 				// get file name from the path
-				$name = substr($org_file_path,strrpos($org_file_path,"/")+1);
+				//dont remove first char of filename if no path is specified
+				if( strpos($org_file_path, "/") !== false ){
+					$name = substr($org_file_path,strrpos($org_file_path,"/")+1);
+				}
 				// add the file to the archive
 				$lib->addFile($org_file_path,$name);
 			}
