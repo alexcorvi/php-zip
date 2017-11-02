@@ -215,8 +215,16 @@ class Zip {
 	 * -------------------------------------------------------------------------
 	**/
 	
-	public function zip_end() {
-		
+	public function zip_end($force_lib = false) {
+
+		// force usage of specific lib (for testing purposes)
+		if($force_lib === 2) {
+			$this->lib = 2;
+		}
+		elseif ($force_lib === 1) {
+			$this->lib = 1;
+		}
+
 		// just to make sure.. if the user haven't called the earlier method
 		if($this->lib === 0 || $this->new_file_path === 0) return 0;
 		
