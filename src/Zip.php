@@ -166,10 +166,6 @@ class Zip {
 		if($this->lib === 0 || $this->new_file_path === 0) return 0;
 		
 		
-		// passing a string => check if it's files delimited by ","
-		if(is_string($in)) if(strpos($in,",") !== false) $in = explode(",",$in);
-		
-		
 		// then check if it exists => either push single file
 		// or push whole directory.
 		// pushing whole directory done through a private method of this class.
