@@ -237,7 +237,9 @@ class Zip {
 			// add each file
 			foreach ($this->org_files as $org_file_path) {
 				// get file name from the path
-				$name = substr($org_file_path,strrpos($org_file_path,"/")+1);
+				if( strpos($org_file_path, "/") !== false ){
+					$name = substr($org_file_path,strrpos($org_file_path,"/")+1);
+				}
 				// add the file to the archive
 				$lib->addFile($org_file_path,$name);
 			}
@@ -263,8 +265,6 @@ class Zip {
 			$count_after = count($lib->listContent());
 			if(($count_after - $count_before) < count($this->org_files)) return -2;
 		}
-		
-		var_dump(file_exists($this->new_file_path));
 		
 		if(!file_exists($this->new_file_path)) return -3;
 		if(filesize($this->new_file_path) === 0) return -4;
