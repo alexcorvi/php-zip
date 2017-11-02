@@ -99,11 +99,10 @@ Note: When I wrote this class, I intended to use it in a multiline fashion (You'
     $this->zip->unzip_file("path/to/new/or/old/zip_file.zip","path/to/containing/directory/");
 ```
 
-## Known limitations
-Check issues
-
-## TODOs
-* Document detailed error reporting
+## Testing
+```
+    cd test && php test.php
+```
 
 ## Credits
 * This approach of solution was inspired by WordPress.
