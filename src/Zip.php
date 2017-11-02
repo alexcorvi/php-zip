@@ -204,14 +204,7 @@ class Zip {
 	 * -------------------------------------------------------------------------
 	 * # params:        NONE
 	 * -------------------------------------------------------------------------
-	 * # return:		-3: After doing the zipping operations, the file size
-	 *						is 0 bytes!
-	 *					-2:	After doing the zipping operations, the file doesn't
-	 *						seem to exist.
-	 *					-1:	Couldn't open zip file, permission denied or zlib
-	 *						wasn't found.
-	 *					00:	Zip_start and zip_add haven't been called yet!
-	 *					+1:	success
+	 * # return:		true
 	 * -------------------------------------------------------------------------
 	**/
 	
@@ -226,13 +219,13 @@ class Zip {
 		}
 
 		// just to make sure.. if the user haven't called the earlier method
-		if($this->lib === 0 || $this->new_file_path === 0) return 0;
+		if($this->lib === 0 || $this->new_file_path === 0) throw new Exception('PHP-ZIP: zip_start and zip_add haven\'t been called yet');
 
 		// using zipArchive class
 		if($this->lib === 1) {
 			$names = $this->commonPath($this->org_files, true);
 			$lib = new ZipArchive();
-			if(!$lib->open($this->new_file_path,ZIPARCHIVE::CREATE)) return -1;
+			if(!$lib->open($this->new_file_path,ZIPARCHIVE::CREATE)) throw new Exception('PHP-ZIP: Permission Denied or zlib can\'t be found');
 			
 			$count_before = $lib->numFiles;
 			
@@ -256,7 +249,7 @@ class Zip {
 			require_once "inc/pclzip.lib.php";
 			$common = $this->commonPath($this->org_files, false);
 
-			if(!$lib = new PclZip($this->new_file_path)) return -1;
+			if(!$lib = new PclZip($this->new_file_path)) throw new Exception('PHP-ZIP: Permission Denied or zlib can\'t be found');
 			$count_before = count($lib->listContent());
 			// add them
 			$lib->add($this->org_files, PCLZIP_OPT_REMOVE_PATH, $common[0]);
@@ -264,13 +257,13 @@ class Zip {
 			$count_after = count($lib->listContent());
 		}
 		
-		if(!file_exists($this->new_file_path)) return -2;
-		if(filesize($this->new_file_path) === 0) return -3;
+		if(!file_exists($this->new_file_path)) throw new Exception('PHP-ZIP: After doing the zipping file can not be found');
+		if(filesize($this->new_file_path) === 0) throw new Exception('PHP-ZIP: After doing the zipping file size is still 0 bytes');
 		
 		// empty the array
 		$this->org_files = array();
 		
-		return 1;
+		return true;
 	}
 	
 
@@ -321,16 +314,14 @@ class Zip {
 	 *												the contents of the zip
 	 *												file will be extract to
 	 * -------------------------------------------------------------------------
-	 * # return:		00: file doesn't exist
-	 *					-1: file type isn't zip
-	 *					+1: success
+	 * # return:		true
 	 * -------------------------------------------------------------------------
 	**/
 	
 	public function unzip_file($file_path,$target_dir=NULL) {
 		
 		// if it doesn't exist
-		if(!file_exists($file_path)) return 0;
+		if(!file_exists($file_path)) throw new Exception("PHP-ZIP: File doesn't Exist");
 		
 		// check mimetype
 		$_FILEINFO = finfo_open(FILEINFO_MIME_TYPE);
@@ -341,7 +332,7 @@ class Zip {
 			'application/x-zip-compressed',
 			'application/s-compressed',
 			'multipart/x-zip')
-		)) return -1;
+		)) throw new Exception("PHP-ZIP: File type is not ZIP");
 		
 		
 		$this->extr_file = $file_path;
@@ -368,22 +359,18 @@ class Zip {
 	 *												the contents of the zip
 	 *												file will be extract to
 	 * -------------------------------------------------------------------------
-	 * # return:		-2:	unzip_file hasn't been called
-	 *					-3: target directory exists as a file not a directory
-	 *					-4: directory not found, and unable to create it
-	 *					-5:	unable to open the zip file
-	 *					-6: unable to extract files
+	 * # return:		true
 	 * -------------------------------------------------------------------------
 	**/
 	
 	public function unzip_to($target_dir) {
 		
 		// validations -- start //
-		if($this->lib === 0 && $this->extr_file === 0) return -2;
+		if($this->lib === 0 && $this->extr_file === 0) throw new Exception("PHP-ZIP: unzip_file hasn't been called");
 		// it exists, but it's not a directory
-		if(file_exists($target_dir) && (!is_dir($target_dir))) return -3;
+		if(file_exists($target_dir) && (!is_dir($target_dir))) throw new Exception("PHP-ZIP: Target directory exists as a file not a directory");
 		// it doesn't exist
-		if(!file_exists($target_dir)) if(!mkdir($target_dir)) return -4;
+		if(!file_exists($target_dir)) if(!mkdir($target_dir)) throw new Exception("PHP-ZIP: Directory not found, and unable to create it");
 		// validations -- end //
 		
 		$this->extr_dirc = $target_dir;
@@ -391,8 +378,8 @@ class Zip {
 		// extract using ZipArchive
 		if($this->lib === 1) {
 			$lib = new ZipArchive;
-			if(!$lib->open($this->extr_file)) return -5;
-			if(!$lib->extractTo($this->extr_dirc)) return -6;
+			if(!$lib->open($this->extr_file)) throw new Exception("PHP-ZIP: Unable to open the zip file");
+			if(!$lib->extractTo($this->extr_dirc)) throw new Exception("PHP-ZIP: Unable to extract files");
 			$lib->close();
 		} 
 		
@@ -401,10 +388,10 @@ class Zip {
 		if($this->lib === 2) {
 			require_once "inc/pclzip.lib.php";
 			$lib = new PclZip($this->extr_file);
-			if(!$lib->extract(PCLZIP_OPT_PATH,$this->extr_dirc)) return -6;
+			if(!$lib->extract(PCLZIP_OPT_PATH,$this->extr_dirc)) throw new Exception("PHP-ZIP: Unable to extract files");
 		}
 		
-		return 1;
+		return true;
 		
 	}
 	

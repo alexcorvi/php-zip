@@ -99,6 +99,8 @@ Note: When I wrote this class, I intended to use it in a multi-line fashion (You
     $this->zip->unzip_file("path/to/new/or/old/zip_file.zip","path/to/containing/directory/");
 ```
 
+> Note: The library will throw a new exception in case of error and will return true in case of success.
+
 ## Testing
 ```
     cd test && php test.php
