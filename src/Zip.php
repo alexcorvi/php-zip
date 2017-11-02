@@ -112,7 +112,7 @@ class Zip {
 	 * -------------------------------------------------------------------------
 	 * # params:        $file_path	<string>	.zip file name.
 	 * -------------------------------------------------------------------------
-	 * # return:		VOID
+	 * # return:		true
 	 * -------------------------------------------------------------------------
 	**/
 	
@@ -125,7 +125,7 @@ class Zip {
 		// So in this case we'll use another lib called PclZip
 		if(class_exists("ZipArchive")) $this->lib = 1;
 		else $this->lib = 2;
-		
+		return true;
 	}
 	
 	
@@ -155,15 +155,14 @@ class Zip {
 	 *										by ",".
 	 *							<array>		array of file and directory paths
 	 * -------------------------------------------------------------------------
-	 * # return:		0:	you have to call zip_start before this.
-	 *					1:	success.
+	 * # return:		true
 	 * -------------------------------------------------------------------------
 	**/
 	
 	public function zip_add($in){
 		
 		// just to make sure.. if the user haven't called the earlier method
-		if($this->lib === 0 || $this->new_file_path === 0) return 0;
+		if($this->lib === 0 || $this->new_file_path === 0) throw new Exception("PHP-ZIP: must call zip_start before zip_add");
 		
 		
 		// then check if it exists => either push single file
@@ -181,7 +180,7 @@ class Zip {
 			$this->zip_add($value);
 		}
 		
-		return 1;
+		return true;
 		
 	}
 	
