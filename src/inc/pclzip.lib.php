@@ -3033,6 +3033,7 @@
     $p_header['offset'] = ftell($this->zip_fd);
 
     // ----- Transform UNIX mtime to DOS format mdate/mtime
+    date_default_timezone_set('UTC');
     $v_date = getdate($p_header['mtime']);
     $v_mtime = ($v_date['hours']<<11) + ($v_date['minutes']<<5) + $v_date['seconds']/2;
     $v_mdate = (($v_date['year']-1980)<<9) + ($v_date['mon']<<5) + $v_date['mday'];
@@ -3079,6 +3080,7 @@
     //}
 
     // ----- Transform UNIX mtime to DOS format mdate/mtime
+    date_default_timezone_set('UTC');
     $v_date = getdate($p_header['mtime']);
     $v_mtime = ($v_date['hours']<<11) + ($v_date['minutes']<<5) + $v_date['seconds']/2;
     $v_mdate = (($v_date['year']-1980)<<9) + ($v_date['mon']<<5) + $v_date['mday'];
