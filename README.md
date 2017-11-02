@@ -2,10 +2,10 @@
 A better PHP zipping/unzipping class.
 
 ## The problem
-When building a CMS that is supposed to be redistributable and functioning on a range of hostings (shared, VPS, dedictaed) a problem often occurs in zipping and unzipping files. since not all PHP installation have the `zipArchive` class exists.
+When building a CMS that is supposed to be redistributable and functioning on a range of hosting solutions (shared, VPS, dedicated) a problem often occurs in zipping and unzipping files. since not all PHP installation have the `zipArchive` class exists.
 
 ##### Case: Duplicator plugin for WordPress
-For a number of clients, a problem seemed oftenly occuring due to missing `zipArchive` class:
+For a number of clients, a problem seemed often occurring due to missing `zipArchive` class:
     
 - [VPS](https://wordpress.org/support/topic/plugin-duplicator-no-zip-archive-enabled-on-vps-what-next)
 - [VPS again](https://wordpress.org/support/topic/plugin-duplicator-ziparchive-extension-required-for-compression)
@@ -15,13 +15,13 @@ For a number of clients, a problem seemed oftenly occuring due to missing `zipAr
 - [cPanel](https://forums.cpanel.net/threads/installing-activating-php-ziparchive-module.470511/)
 - [Yet another case](http://codecharismatic.com/the-stupid-zip-archive-and-wordpress-duplicator-issue/)
 
-However, although the plugin itself is was distributed as a zip file, the wordpress code was **able** to unzip and install it. This is because the WordPress core code will check if the `zipArchive` class exists, and if it does not, it will use the `PclZip` class which can be included as a PHP file and considered as an alternative for `zipArchive`.
+However, although the plugin itself is was distributed as a zip file, the WordPress code was **able** to unzip and install it. This is because the WordPress core code will check if the `zipArchive` class exists, and if it does not, it will use the `PclZip` class which can be included as a PHP file and considered as an alternative for `zipArchive`.
 
 ## The solution
 
 In this class, I tried to solve this problem in the same approach that the WordPress core team did; by checking if the class `zipArchive` exists or not, and using `PclZip` if it does not.
 
-This does **NOT** solve missing the `zlib` extension which  is a requirement even for the `PclZip` class. However, missing the `zlib` extensio is less common than just missing the `zipArchive` class.
+This does **NOT** solve missing the `zlib` extension which  is a requirement even for the `PclZip` class. However, missing the `zlib` extension is less common than just missing the `zipArchive` class.
 
 This class also provides a very simple and intuitive way of dealing with zip files.
 
