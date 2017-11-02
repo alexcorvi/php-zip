@@ -29,14 +29,14 @@ This class also provides a very simple and intuitive way of dealing with zip fil
 
 To install this class, simply upload the `src` folder contents to your server and include the `Zip.php` file.
 
-Note: To install in codeigniter create a folder called `zip` in your in `application/libraries/` and put the `src` folder contents inside of it, then load it using the library loader `$this->load->library("zip/zip");`.
+Note: To install in CodeIgniter create a folder called `zip` in your in `application/libraries/` and put the `src` folder contents inside of it, then load it using the library loader `$this->load->library("zip/zip");`.
 
 ## Usage Examples:
 
-Note: When I wrote this class, I intended to use it in a multiline fashion (You'll see what I mean). However, I decided later that I should make a shorthand for this, so it would be usable in a one-line style.
+Note: When I wrote this class, I intended to use it in a multi-line fashion (You'll see what I mean). However, I decided later that I should make a shorthand for this, so it would be usable in a one-line style.
 
 ### Adding new files to the zip / Creating new zip file:
-#### Multiline style
+#### Multi-line style
 - **PHP**: 
 ```php
     require_once "path/to/src/zip.php";
@@ -70,8 +70,8 @@ Note: When I wrote this class, I intended to use it in a multiline fashion (You'
     $this->zip->zip_files(array("path/to/new/or/old/zip_file.zip","path/to/directory/"),"path/to/zip/file.zip");
 ```
 
-### Exctracting (unzipping) files:
-#### Multiline style
+### Extracting (unzipping) files:
+#### Multi-line style
 - **PHP**: 
 ```php
     require_once "path/to/src/zip.php";
