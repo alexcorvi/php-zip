@@ -121,7 +121,7 @@ class Zip {
 		// save the new file path
 		$this->new_file_path = $file_path;
 		
-		// Some php installtions doesn't have the ZipArchive
+		// Some php installations doesn't have the ZipArchive
 		// So in this case we'll use another lib called PclZip
 		if(class_exists("ZipArchive")) $this->lib = 1;
 		else $this->lib = 2;
@@ -162,7 +162,7 @@ class Zip {
 	
 	public function zip_add($in){
 		
-		// just to make sure.. if the user haven't called the earlier metho
+		// just to make sure.. if the user haven't called the earlier method
 		if($this->lib === 0 || $this->new_file_path === 0) return 0;
 		
 		
@@ -208,13 +208,10 @@ class Zip {
 	 * -------------------------------------------------------------------------
 	 * # params:        NONE
 	 * -------------------------------------------------------------------------
-	 * # return:		-4: After doing the zippig operations, the file size
+	 * # return:		-3: After doing the zipping operations, the file size
 	 *						is 0 bytes!
-	 *					-3:	After doing the zipping operations, the file doesn't
+	 *					-2:	After doing the zipping operations, the file doesn't
 	 *						seem to exist.
-	 *					-2:	After adding the files, the files that has been
-	 *						added isn't equal to the files that were supposed
-	 *						to be added.
 	 *					-1:	Couldn't open zip file, permission denied or zlib
 	 *						wasn't found.
 	 *					00:	Zip_start and zip_add haven't been called yet!
