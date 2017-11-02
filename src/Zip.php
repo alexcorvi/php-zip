@@ -227,28 +227,24 @@ class Zip {
 
 		// just to make sure.. if the user haven't called the earlier method
 		if($this->lib === 0 || $this->new_file_path === 0) return 0;
-		
+
 		// using zipArchive class
 		if($this->lib === 1) {
+			$names = $this->commonPath($this->org_files, true);
 			$lib = new ZipArchive();
 			if(!$lib->open($this->new_file_path,ZIPARCHIVE::CREATE)) return -1;
 			
 			$count_before = $lib->numFiles;
 			
+
 			// add each file
-			foreach ($this->org_files as $org_file_path) {
-				// get file name from the path
-				if( strpos($org_file_path, "/") !== false ){
-					$name = substr($org_file_path,strrpos($org_file_path,"/")+1);
-				}
+			foreach ($this->org_files as $index => $org_file_path) {
 				// add the file to the archive
-				$lib->addFile($org_file_path,$name);
+				$lib->addFile($org_file_path,$names[$index]);
 			}
 			
 			$count_after = $lib->numFiles;
-			
-			// check number of files now in the archive
-			if(($count_after - $count_before) < count($this->org_files)) return -2;
+
 			// close the archive
 			$lib->close();
 		}
@@ -258,17 +254,18 @@ class Zip {
 		if($this->lib === 2) {
 			// require the lib
 			require_once "inc/pclzip.lib.php";
+			$common = $this->commonPath($this->org_files, false);
+
 			if(!$lib = new PclZip($this->new_file_path)) return -1;
 			$count_before = count($lib->listContent());
 			// add them
-			$lib->add($this->org_files,PCLZIP_OPT_REMOVE_ALL_PATH);
+			$lib->add($this->org_files, PCLZIP_OPT_REMOVE_PATH, $common[0]);
 			// check number of files now in the archive
 			$count_after = count($lib->listContent());
-			if(($count_after - $count_before) < count($this->org_files)) return -2;
 		}
 		
-		if(!file_exists($this->new_file_path)) return -3;
-		if(filesize($this->new_file_path) === 0) return -4;
+		if(!file_exists($this->new_file_path)) return -2;
+		if(filesize($this->new_file_path) === 0) return -3;
 		
 		// empty the array
 		$this->org_files = array();
@@ -494,4 +491,40 @@ class Zip {
 		return join(DIRECTORY_SEPARATOR, func_get_args());
 	}
 	
+	/**=========================================================================
+	 * ZIP -> commonPath
+	 * -------------------------------------------------------------------------
+	 * # Description:   Will remove the common path from files
+	 * -------------------------------------------------------------------------
+	 *	# Params		$files Array<string>
+	 * -------------------------------------------------------------------------
+	 * # return:		Array<string>
+	 * -------------------------------------------------------------------------
+	**/
+	private function commonPath($files, $remove = true) {
+		foreach($files as $index => $filesStr) {
+			$files[$index] = explode(DIRECTORY_SEPARATOR, $filesStr);
+		}
+		$toDiff = $files;
+		foreach($toDiff as $arr_i => $arr) {
+			foreach($arr as $name_i => $name) {
+				$toDiff[$arr_i][$name_i] = $name . "___" . $name_i;
+			}
+		}
+		$diff = call_user_func_array("array_diff",$toDiff);
+		reset($diff);
+		$i = key($diff) - 1;
+		if($remove) {
+			foreach($files as $index => $arr) {
+				$files[$index] = implode(DIRECTORY_SEPARATOR,array_slice($files[$index], $i));
+			}
+		}
+		else {
+			foreach($files as $index => $arr) {
+				$files[$index] = implode(DIRECTORY_SEPARATOR,array_slice($files[$index], 0, $i));
+			}
+		}
+		return $files;
+	}
+
 }
