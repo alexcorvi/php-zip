@@ -1,7 +1,7 @@
 <?php
 /**=========================================================================
  * 
- * ZIP CLASS		0.2.0
+ * ZIP CLASS		0.3.0
  * -----------------------------------------------------------------------------
  * # Description:   A replacement for the default codeigniter zip class.
  *					This class can be used for extracting, creating
