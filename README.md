@@ -43,7 +43,6 @@ Note: When I wrote this class, I intended to use it in a multiline fashion (You'
     $zip = new Zip();
     $zip->zip_start("path/to/new/or/old/zip_file.zip");
     $zip->zip_add("path/to/example.png"); // adding a file
-    $zip->zip_add("path/to/example1.png,path/to/example2.png"); // adding two files delimited by the ","
     $zip->zip_add(array("path/to/example1.png","path/to/example2.png")); // adding two files as an array
     $zip->zip_add(array("path/to/example1.png","path/to/directory/")); // adding one file and one directory
     $zip->zip_end();
@@ -53,7 +52,6 @@ Note: When I wrote this class, I intended to use it in a multiline fashion (You'
 	$this->load->library("zip/zip");
     $this->zip->zip_start("path/to/new/or/old/zip_file.zip");
     $this->zip->zip_add("path/to/example.png"); // adding a file
-    $this->zip->zip_add("path/to/example1.png,path/to/example2.png"); // adding two files delimited by the ","
     $this->zip->zip_add(array("path/to/example1.png","path/to/example2.png")); // adding two files as an array
     $this->zip->zip_add(array("path/to/example1.png","path/to/directory/")); // adding one file and one directory
     $this->zip->zip_end();
